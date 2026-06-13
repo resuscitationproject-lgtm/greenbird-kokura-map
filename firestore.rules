@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /trash_reports/{reportId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.keys().hasAll(['date', 'location', 'amount'])
+        && request.resource.data.keys().hasOnly(['date', 'location', 'amount', 'memo'])
+        && request.resource.data.date == request.time
+        && request.resource.data.location is latlng
+        && request.resource.data.amount is int
+        && request.resource.data.amount >= 1
+        && request.resource.data.amount <= 5
+        && (
+          !request.resource.data.keys().hasAny(['memo'])
+          || (
+            request.resource.data.memo is string
+            && request.resource.data.memo.size() <= 200
+          )
+        );
+      allow update, delete: if false;
+    }
+  }
+}
