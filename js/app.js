@@ -14,11 +14,22 @@ const map = L.map("map", {
   zoomControl: true,
 }).setView(KOKURA_STATION, 16);
 
+function refreshMapSize() {
+  window.requestAnimationFrame(() => {
+    map.invalidateSize({ pan: false });
+  });
+}
+
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
+
+window.addEventListener("resize", refreshMapSize);
+window.addEventListener("orientationchange", refreshMapSize);
+window.addEventListener("pageshow", refreshMapSize);
+refreshMapSize();
 
 function setStatus(message, type = "info") {
   statusElement.textContent = message;

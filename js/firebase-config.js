@@ -1,8 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
   GeoPoint,
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -26,12 +34,18 @@ export const isFirebaseConfigured = !Object.values(firebaseConfig).some((value) 
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app);
 export {
   GeoPoint,
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   orderBy,
+  onAuthStateChanged,
   query,
   serverTimestamp,
+  signInWithEmailAndPassword,
+  signOut,
 };
